@@ -24,7 +24,7 @@ public class BootCoinServiceImpl implements BootCoinService {
 
   @Override
   public Mono<BootCoin> createBootCoin(BootCoin bootCoinDocument) {
-    return ;
+    return null;
   }
 
   @Override

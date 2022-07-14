@@ -5,6 +5,7 @@ import com.enttdata.bootcoinservice.service.YankiDTOService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,12 @@ public class YankiDTOServiceImpl implements YankiDTOService {
   public Mono<YankiDto> findByPhoneNumber(String phoneNumber) {
     Map<String,Object> params = new HashMap<>();
     params.put("phoneNumber",phoneNumber);
-    return null;//client.baseUrl("http://localhost:8087")
+    return client.baseUrl("http://localhost:8087").build()
+        .get().uri("/phone/{phoneNumber}",params)
+        .accept(MediaType.APPLICATION_JSON)
+        .exchangeToMono(
+            clientResponse -> clientResponse.bodyToMono(YankiDto.class))
+        .doOnNext(c -> log.info("guardando cuenta: Cuenta Amount={}",c.getOwnerName()));
         //.
   }
 
